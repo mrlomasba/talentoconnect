@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicio de Reclutamiento Integral - Tu Socio Estratégico</title>
+    <!-- Carga de Tailwind CSS para un diseño moderno y responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Configuración de la fuente Inter y estilos base */
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        /* Estilos para el modo oscuro */
+        .dark {
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+        .dark .bg-white {
+            background-color: #161b22;
+        }
+        .dark .text-gray-900 {
+            color: #c9d1d9;
+        }
+        .dark .text-gray-700 {
+            color: #a8b3be;
+        }
+        /* Ajuste específico para el navbar en modo oscuro para mejorar la visibilidad */
+        .dark nav a {
+            color: #d1d5db; /* Gris claro sutil (similar a text-gray-300) */
+        }
+        .dark nav a:hover {
+            color: #3b82f6; /* Azul de hover sigue siendo visible */
+        }
+        .dark .shadow-lg {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.5);
+        }
+        /* Estilo para los botones de WhatsApp para un mejor aspecto táctil */
+        .whatsapp-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .whatsapp-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.5), 0 4px 6px -4px rgba(34, 197, 94, 0.5);
+        }
+        /* Estilo para el botón de Dark/Light Mode */
+        #darkModeToggle {
+            cursor: pointer;
+            z-index: 50; /* Para que esté siempre encima */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen">
+
+    <!-- Header / Navbar con Modo Oscuro -->
+    <header class="sticky top-0 bg-white shadow-md z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-3xl font-extrabold text-blue-600">
+                <span class="text-green-500">Talento</span>Connect
+            </h1>
+            <!-- Se agregó una clase personalizada al nav para controlar el color del texto en modo oscuro -->
+            <nav class="hidden md:flex space-x-6 text-lg font-medium">
+                <a href="#servicios" class="text-gray-900 dark:text-gray-300 hover:text-blue-600 transition duration-300">Servicios</a>
+                <a href="#proceso" class="text-gray-900 dark:text-gray-300 hover:text-blue-600 transition duration-300">Proceso</a>
+                <a href="#contacto" class="text-gray-900 dark:text-gray-300 hover:text-blue-600 transition duration-300">Contacto</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <!-- Botón de Modo Oscuro/Claro -->
+                <button id="darkModeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <!-- Icono de Sol (Modo Claro) -->
+                    <svg id="sun-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <!-- Icono de Luna (Modo Oscuro) -->
+                    <svg id="moon-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+
+                <!-- Botón de Contacto principal (visible en desktop) -->
+                <a href="https://wa.me/5215512345678" target="_blank" class="hidden md:block bg-blue-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-blue-700 transition duration-300 shadow-lg">
+                    Contactar Ahora
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sección Principal / Hero (CAMBIO DE ESTILO CLARO) -->
+    <main class="pt-16 pb-20 sm:pt-20 sm:pb-32 bg-gradient-to-br from-white to-blue-50 dark:from-gray-900 dark:to-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6">
+                El <span class="text-blue-600">Talento</span> que tu Empresa Necesita, <span class="text-green-600 dark:text-green-400">Garantizado</span>.
+            </h2>
+            <p class="text-xl sm:text-2xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto mb-10">
+                Somos tu socio estratégico en reclutamiento, cubriendo **todos los niveles** de perfiles: desde ayudantes generales hasta directivos e ingenieros especializados.
+            </p>
+
+            <!-- CTA principal con WhatsApp -->
+            <button id="mainWhatsappBtn" class="whatsapp-btn bg-green-500 text-white text-xl font-bold px-10 py-4 rounded-xl shadow-2xl shadow-green-500/50 hover:bg-green-600">
+                <!-- Icono de WhatsApp (SVG) -->
+                <svg class="w-7 h-7 mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C7.38 2 3.5 5.8 3.5 10.45c0 1.54.43 3.05 1.25 4.37L3 21.05l5.44-1.46c1.23.68 2.65 1.07 4.08 1.07C16.7 20.66 21 16.36 21 11.01 21 6.36 17.16 2 12.04 2zm3.84 14.37c-.15.4-.55.66-1.01.81-1.07.36-2.3.56-3.56.56-2.52 0-4.82-1.01-6.55-2.73-1.63-1.63-2.6-3.8-2.6-6.15 0-1.7.42-3.32 1.22-4.75.14-.28.32-.54.54-.76.45-.45 1.03-.72 1.63-.8.29-.04.59-.06.9-.06 1.07 0 2.08.31 2.93.91.4.29.67.68.79 1.15.15.54-.03 1.08-.45 1.48-.48.45-1.08.72-1.7.8-.3.04-.6.06-.9.06-1.03 0-2.02-.3-2.93-.91-.4-.29-.67-.68-.79-1.15-.15-.54.03-1.08.45-1.48.48.45-1.08.72-1.7.8-.3.04-.6.06-.9.06z"/></svg>
+                Contáctanos por WhatsApp
+            </button>
+            <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">Respuesta inmediata de nuestro equipo.</p>
+        </div>
+    </main>
+
+    <!-- Sección de Servicios (Tipos de Perfiles) -->
+    <section id="servicios" class="py-20 sm:py-24 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl sm:text-4xl font-extrabold text-center text-gray-900 dark:text-white mb-12">Nuestros Niveles de Reclutamiento</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Tarjeta: Operativo y General (CAMBIO DE ESTILO CLARO) -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border-t-4 border-blue-500 hover:shadow-2xl transition duration-300">
+                    <div class="text-4xl mb-4 text-blue-500">⚙️</div>
+                    <!-- Texto de encabezado con color blanco sutil en dark mode -->
+                    <h4 class="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-200">Nivel Operativo</h4>
+                    <!-- Párrafo con color blanco sutil/diminuto en dark mode -->
+                    <p class="text-gray-700 dark:text-gray-400">Reclutamiento masivo y especializado para puestos base: Ayudantes Generales, Personal de Línea de Producción, Operadores, Almacenistas y Personal de Limpieza.</p>
+                </div>
+
+                <!-- Tarjeta: Administrativo y Especializado (CAMBIO DE ESTILO CLARO) -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border-t-4 border-green-500 hover:shadow-2xl transition duration-300">
+                    <div class="text-4xl mb-4 text-green-500">💼</div>
+                    <!-- Texto de encabezado con color blanco sutil en dark mode -->
+                    <h4 class="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-200">Administrativo & Técnico</h4>
+                    <!-- Párrafo con color blanco sutil/diminuto en dark mode -->
+                    <p class="text-gray-700 dark:text-gray-400">Búsqueda de especialistas: Contadores, Ejecutivos de Ventas, Marketing Digital, Ingenieros (Mecánicos, Industriales, Sistemas) y Personal de RH.</p>
+                </div>
+
+                <!-- Tarjeta: Gerencial y Directivo (CAMBIO DE ESTILO CLARO) -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border-t-4 border-yellow-500 hover:shadow-2xl transition duration-300">
+                    <!-- Emoji cambiado a ⭐ para simbolizar alto nivel/CEO -->
+                    <div class="text-4xl mb-4 text-yellow-500">⭐</div>
+                    <!-- Texto de encabezado con color blanco sutil en dark mode -->
+                    <h4 class="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-200">Directivo y Gerencial</h4>
+                    <!-- Párrafo con color blanco sutil/diminuto en dark mode -->
+                    <p class="text-gray-700 dark:text-gray-400">Headhunting de alto nivel para roles clave: Gerentes de Planta, Directores de Operaciones, CFOs, CEOs y posiciones estratégicas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Proceso (CAMBIO DE ESTILO CLARO) -->
+    <section id="proceso" class="py-20 sm:py-24 bg-blue-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl sm:text-4xl font-extrabold text-center text-gray-900 dark:text-white mb-16">Nuestro Proceso Simplificado</h3>
+            <div class="relative">
+                <!-- Línea de tiempo responsive -->
+                <div class="hidden md:block absolute h-full w-0.5 bg-blue-300 dark:bg-blue-600 left-1/2 transform -translate-x-1/2"></div>
+
+                <div class="space-y-12">
+                    <!-- Paso 1 -->
+                    <div class="flex flex-col md:flex-row items-center md:even:flex-row-reverse">
+                        <div class="md:w-1/2 p-4 text-center md:text-right md:even:text-left">
+                            <div class="bg-blue-600 text-white font-extrabold text-xl w-10 h-10 flex items-center justify-center rounded-full mx-auto md:mx-0 md:even:ml-auto md:even:mr-0 mb-3 md:hidden">1</div>
+                            <h4 class="text-2xl font-semibold text-gray-900 dark:text-white">1. Definición del Perfil</h4>
+                            <p class="mt-2 text-gray-700 dark:text-gray-300">Entendemos profundamente la cultura de tu empresa y las responsabilidades exactas del puesto para crear una estrategia de búsqueda precisa.</p>
+                        </div>
+                        <div class="hidden md:block md:w-1/12 p-4">
+                            <div class="bg-blue-600 text-white font-extrabold text-xl w-12 h-12 flex items-center justify-center rounded-full shadow-xl ring-4 ring-blue-200 dark:ring-blue-800 mx-auto">1</div>
+                        </div>
+                        <div class="hidden md:block md:w-1/2"></div>
+                    </div>
+
+                    <!-- Paso 2 -->
+                    <div class="flex flex-col md:flex-row items-center md:even:flex-row-reverse">
+                        <div class="hidden md:block md:w-1/2"></div>
+                        <div class="hidden md:block md:w-1/12 p-4">
+                            <div class="bg-green-600 text-white font-extrabold text-xl w-12 h-12 flex items-center justify-center rounded-full shadow-xl ring-4 ring-green-200 dark:ring-green-800 mx-auto">2</div>
+                        </div>
+                        <div class="md:w-1/2 p-4 text-center md:text-left md:even:text-right">
+                            <div class="bg-green-600 text-white font-extrabold text-xl w-10 h-10 flex items-center justify-center rounded-full mx-auto md:mx-0 md:even:mr-auto md:even:ml-0 mb-3 md:hidden">2</div>
+                            <h4 class="text-2xl font-semibold text-gray-900 dark:text-white">2. Búsqueda y Filtrado Activo</h4>
+                            <p class="mt-2 text-gray-700 dark:text-gray-300">Utilizamos múltiples canales de Headhunting y filtros avanzados para identificar a los candidatos que realmente cumplen con los requisitos técnicos y culturales.</p>
+                        </div>
+                    </div>
+
+                    <!-- Paso 3 -->
+                    <div class="flex flex-col md:flex-row items-center md:even:flex-row-reverse">
+                        <div class="md:w-1/2 p-4 text-center md:text-right md:even:text-left">
+                            <div class="bg-yellow-600 text-white font-extrabold text-xl w-10 h-10 flex items-center justify-center rounded-full mx-auto md:mx-0 md:even:ml-auto md:even:mr-0 mb-3 md:hidden">3</div>
+                            <h4 class="text-2xl font-semibold text-gray-900 dark:text-white">3. Evaluación y Presentación</h4>
+                            <p class="mt-2 text-gray-700 dark:text-gray-300">Realizamos entrevistas profundas, evaluaciones de habilidades y presentamos solo a los 3-5 mejores candidatos pre-calificados a tu equipo.</p>
+                        </div>
+                        <div class="hidden md:block md:w-1/12 p-4">
+                            <div class="bg-yellow-600 text-white font-extrabold text-xl w-12 h-12 flex items-center justify-center rounded-full shadow-xl ring-4 ring-yellow-200 dark:ring-yellow-800 mx-auto">3</div>
+                        </div>
+                        <div class="hidden md:block md:w-1/2"></div>
+                    </div>
+
+                    <!-- Paso 4 -->
+                    <div class="flex flex-col md:flex-row items-center md:even:flex-row-reverse">
+                        <div class="hidden md:block md:w-1/2"></div>
+                        <div class="hidden md:block md:w-1/12 p-4">
+                            <div class="bg-red-600 text-white font-extrabold text-xl w-12 h-12 flex items-center justify-center rounded-full shadow-xl ring-4 ring-red-200 dark:ring-red-800 mx-auto">4</div>
+                        </div>
+                        <div class="md:w-1/2 p-4 text-center md:text-left md:even:text-right">
+                            <div class="bg-red-600 text-white font-extrabold text-xl w-10 h-10 flex items-center justify-center rounded-full mx-auto md:mx-0 md:even:mr-auto md:even:ml-0 mb-3 md:hidden">4</div>
+                            <h4 class="text-2xl font-semibold text-gray-900 dark:text-white">4. Seguimiento y Garantía</h4>
+                            <p class="mt-2 text-gray-700 dark:text-gray-300">Apoyamos en la negociación de la oferta y realizamos un seguimiento post-contratación para asegurar una integración exitosa. Ofrecemos garantía de reemplazo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Contacto Rápido / Footer -->
+    <footer id="contacto" class="py-12 bg-gray-900 dark:bg-black text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h3 class="text-3xl font-extrabold mb-4">¿Listo para Contratar al Mejor Talento?</h3>
+            <p class="text-lg text-gray-300 mb-8">Hablemos sobre tus necesidades de personal. Un socio de reclutamiento está listo para ayudarte.</p>
+            
+            <!-- Correo de contacto agregado -->
+            <p class="text-xl text-gray-100 font-semibold mb-6">
+                Correo de contacto: 
+                <a href="mailto:contacto@talentoconnect.com" class="text-blue-400 hover:text-blue-300 transition duration-300 underline">contacto@talentoconnect.com</a>
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                <!-- Botón de WhatsApp - Contacto Principal -->
+                <button onclick="contactWhatsApp('main')" class="whatsapp-btn bg-green-500 text-white text-lg font-bold px-8 py-3 rounded-full hover:bg-green-600 shadow-xl">
+                    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C7.38 2 3.5 5.8 3.5 10.45c0 1.54.43 3.05 1.25 4.37L3 21.05l5.44-1.46c1.23.68 2.65 1.07 4.08 1.07C16.7 20.66 21 16.36 21 11.01 21 6.36 17.16 2 12.04 2z"/></svg>
+                    Contactar Vía WhatsApp
+                </button>
+
+                <!-- Botón de WhatsApp - Perfiles Especializados (Ejemplo de función) -->
+                <button onclick="contactWhatsApp('especializados')" class="whatsapp-btn bg-blue-500 text-white text-lg font-bold px-8 py-3 rounded-full hover:bg-blue-600 shadow-xl">
+                    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C7.38 2 3.5 5.8 3.5 10.45c0 1.54.43 3.05 1.25 4.37L3 21.05l5.44-1.46c1.23.68 2.65 1.07 4.08 1.07C16.7 20.66 21 16.36 21 11.01 21 6.36 17.16 2 12.04 2z"/></svg>
+                    Perfiles Técnicos/Directivos
+                </button>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-gray-700">
+                <p class="text-sm text-gray-400">
+                    &copy; 2025 TalentoConnect. Todos los derechos reservados. | Tu aliado en Capital Humano.
+                    <br class="sm:hidden">
+                    <!-- Créditos del desarrollador agregados -->
+                    <span class="block mt-2 sm:mt-0 text-xs">
+                        Desarrollador Web: Ing. Edgar Lomas <a href="tel:+528123384579" class="hover:underline">| Tel: 8123384579</a>
+                    </span>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL SIMPLE DE MENSAJE (Sustituye a alert()) -->
+    <div id="customModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-2xl max-w-sm w-full transform transition-all scale-100 dark:text-white">
+            <h5 id="modalTitle" class="text-xl font-bold mb-3 text-blue-600 dark:text-blue-400">Mensaje</h5>
+            <p id="modalMessage" class="text-gray-700 dark:text-gray-300 mb-6">El mensaje de la aplicación se mostrará aquí.</p>
+            <button onclick="closeModal()" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition duration-200">Aceptar</button>
+        </div>
+    </div>
+
+    <script>
+        const phoneNumber = '5215512345678'; // Reemplaza con tu número de WhatsApp real (código de país + número).
+
+        /**
+         * Función para mostrar un modal personalizado.
+         * @param {string} title Título del modal.
+         * @param {string} message Contenido del mensaje.
+         */
+        function showModal(title, message) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('customModal').classList.remove('hidden');
+        }
+
+        /**
+         * Función para cerrar el modal.
+         */
+        function closeModal() {
+            document.getElementById('customModal').classList.add('hidden');
+        }
+
+        /**
+         * Función para contactar por WhatsApp con un mensaje predefinido.
+         * @param {string} type Tipo de contacto para personalizar el mensaje.
+         */
+        function contactWhatsApp(type) {
+            let message = '';
+
+            switch (type) {
+                case 'main':
+                    message = 'Hola, estoy interesado en sus servicios de reclutamiento y me gustaría solicitar una cotización.';
+                    break;
+                case 'especializados':
+                    message = 'Hola, mi empresa necesita reclutar perfiles técnicos/directivos. ¿Podemos agendar una llamada?';
+                    break;
+                default:
+                    message = 'Hola, estoy contactando a TalentoConnect desde su sitio web.';
+                    break;
+            }
+
+            // Codificar el mensaje para la URL
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+            // Abrir la URL en una nueva pestaña
+            window.open(whatsappUrl, '_blank');
+
+            // Mostrar un mensaje de éxito/feedback usando el modal
+            showModal('¡Redireccionando a WhatsApp!', 'Serás dirigido a WhatsApp para enviarnos el mensaje predefinido. Te responderemos a la brevedad.');
+        }
+
+        // ---------------------------------------------------------------------
+        // Lógica del Modo Oscuro/Claro
+        // ---------------------------------------------------------------------
+
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const body = document.body;
+
+        /**
+         * Función para aplicar o quitar el modo oscuro
+         * @param {boolean} isDark true para modo oscuro, false para modo claro
+         */
+        function setDarkMode(isDark) {
+            if (isDark) {
+                body.classList.add('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark');
+                moonIcon.classList.remove('hidden');
+                sunIcon.classList.add('hidden');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        /**
+         * Inicializa el modo de color basado en la preferencia del usuario o del sistema.
+         */
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (savedTheme) {
+                // Si hay un tema guardado, úsalo
+                setDarkMode(savedTheme === 'dark');
+            } else {
+                // Si no hay tema guardado, usa la preferencia del sistema
+                setDarkMode(prefersDark);
+            }
+        }
+
+        // Inicializar el tema al cargar la página
+        initTheme();
+
+        // Listener para el botón de alternar
+        darkModeToggle.addEventListener('click', () => {
+            const isCurrentlyDark = body.classList.contains('dark');
+            setDarkMode(!isCurrentlyDark);
+        });
+
+        // ---------------------------------------------------------------------
+        // Funciones Extra/Indispensables
+        // ---------------------------------------------------------------------
+
+        // Asigna la función de contacto al botón principal del hero section
+        document.getElementById('mainWhatsappBtn').addEventListener('click', () => {
+            contactWhatsApp('main');
+        });
+
+        // Función de Desplazamiento Suave (Smooth Scroll)
+        // Permite que los enlaces del navbar se desplacen suavemente a las secciones
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Función de Feedback: Muestra un mensaje en consola al visitar la página
+        console.log("¡Bienvenido al sitio web de reclutamiento TalentoConnect! Gracias por visitarnos.");
+
+    </script>
+</body>
+</html>
