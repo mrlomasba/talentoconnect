@@ -13,6 +13,8 @@
         body {
             font-family: 'Inter', sans-serif;
             transition: background-color 0.3s, color 0.3s;
+            /* FIX: Oculta el scroll horizontal (barra blanca) que puede aparecer en móviles */
+            overflow-x: hidden;
         }
         /* Estilos para el modo oscuro */
         .dark {
@@ -308,7 +310,7 @@
                     message = 'Hola, estoy interesado en sus servicios de reclutamiento y me gustaría solicitar una cotización.';
                     break;
                 case 'especializados':
-                    message = 'Hola, mi empresa necesita reclutar perfiles técnicos/directivos. ¿Podemos agendar una llamada?';
+                    message = 'Hola, mi empresa necesita reclutar perfiles técnicos/directivos. ¿Puedemos agendar una llamada?';
                     break;
                 default:
                     message = 'Hola, estoy contactando a TalentoConnect desde su sitio web.';
