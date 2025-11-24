@@ -64,12 +64,14 @@
             <h1 class="text-3xl font-extrabold text-blue-600">
                 <span class="text-green-500">Talento</span>Connect
             </h1>
-            <!-- Se agregó una clase personalizada al nav para controlar el color del texto en modo oscuro -->
+            
+            <!-- Navegación de Escritorio -->
             <nav class="hidden md:flex space-x-6 text-lg font-medium">
                 <a href="#servicios" class="text-gray-900 dark:text-gray-300 hover:text-blue-600 transition duration-300">Servicios</a>
                 <a href="#proceso" class="text-gray-900 dark:text-gray-300 hover:text-blue-600 transition duration-300">Proceso</a>
                 <a href="#contacto" class="text-gray-900 dark:text-gray-300 hover:text-blue-600 transition duration-300">Contacto</a>
             </nav>
+            
             <div class="flex items-center space-x-4">
                 <!-- Botón de Modo Oscuro/Claro -->
                 <button id="darkModeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -80,14 +82,29 @@
                 </button>
 
                 <!-- Botón de Contacto principal (visible en desktop) -->
-                <a href="https://wa.me/5215512345678" target="_blank" class="hidden md:block bg-blue-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-blue-700 transition duration-300 shadow-lg">
+                <a href="https://wa.me/5215512345678" target="_blank" class="hidden md:block bg-blue-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-blue-700 transition duration-300 shadow-lg" data-type="main">
                     Contactar Ahora
                 </a>
+
+                <!-- Botón de Menú Móvil (Hamburguesa/Cerrar) -->
+                <button id="mobileMenuButton" class="md:hidden p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 transition-colors duration-300 focus:outline-none">
+                    <svg id="menuIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    <svg id="closeIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- Sección Principal / Hero (CAMBIO DE ESTILO CLARO) -->
+    <!-- Menú Móvil Desplegable -->
+    <div id="mobileMenu" class="md:hidden hidden bg-white dark:bg-gray-800 shadow-xl border-t border-gray-200 dark:border-gray-700">
+        <div class="flex flex-col p-4 space-y-3">
+            <a href="#servicios" class="text-gray-900 dark:text-gray-300 hover:text-blue-600 font-semibold p-2 border-b border-gray-100 dark:border-gray-700 transition duration-300">Servicios</a>
+            <a href="#proceso" class="text-gray-900 dark:text-gray-300 hover:text-blue-600 font-semibold p-2 border-b border-gray-100 dark:border-gray-700 transition duration-300">Proceso</a>
+            <a href="#contacto" class="text-gray-900 dark:text-gray-300 hover:text-blue-600 font-semibold p-2 transition duration-300">Contacto</a>
+        </div>
+    </div>
+
+    <!-- Sección Principal / Hero -->
     <main class="pt-16 pb-20 sm:pt-20 sm:pb-32 bg-gradient-to-br from-white to-blue-50 dark:from-gray-900 dark:to-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6">
@@ -98,9 +115,10 @@
             </p>
 
             <!-- CTA principal con WhatsApp -->
-            <button id="mainWhatsappBtn" class="whatsapp-btn bg-green-500 text-white text-xl font-bold px-10 py-4 rounded-xl shadow-2xl shadow-green-500/50 hover:bg-green-600">
+            <!-- NOTA: Se ha añadido data-type="main" y la funcionalidad se asigna en JS -->
+            <button id="mainWhatsappBtn" class="whatsapp-btn bg-green-500 text-white text-xl font-bold px-10 py-4 rounded-xl shadow-2xl shadow-green-500/50 hover:bg-green-600" data-type="main">
                 <!-- Icono de WhatsApp (SVG) -->
-                <svg class="w-7 h-7 mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C7.38 2 3.5 5.8 3.5 10.45c0 1.54.43 3.05 1.25 4.37L3 21.05l5.44-1.46c1.23.68 2.65 1.07 4.08 1.07C16.7 20.66 21 16.36 21 11.01 21 6.36 17.16 2 12.04 2zm3.84 14.37c-.15.4-.55.66-1.01.81-1.07.36-2.3.56-3.56.56-2.52 0-4.82-1.01-6.55-2.73-1.63-1.63-2.6-3.8-2.6-6.15 0-1.7.42-3.32 1.22-4.75.14-.28.32-.54.54-.76.45-.45 1.03-.72 1.63-.8.29-.04.59-.06.9-.06 1.07 0 2.08.31 2.93.91.4.29.67.68.79 1.15.15.54-.03 1.08-.45 1.48-.48.45-1.08.72-1.7.8-.3.04-.6.06-.9.06-1.03 0-2.02-.3-2.93-.91-.4-.29-.67-.68-.79-1.15-.15-.54.03-1.08.45-1.48.48.45-1.08.72-1.7.8-.3.04-.6.06-.9.06z"/></svg>
+                <svg class="w-7 h-7 mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C7.38 2 3.5 5.8 3.5 10.45c0 1.54.43 3.05 1.25 4.37L3 21.05l5.44-1.46c1.23.68 2.65 1.07 4.08 1.07C16.7 20.66 21 16.36 21 11.01 21 6.36 17.16 2 12.04 2zm3.84 14.37c-.15.4-.55.66-1.01.81-1.07.36-2.3.56-3.56.56-2.52 0-4.82-1.01-6.55-2.73-1.63-1.63-2.6-3.8-2.6-6.15 0-1.7.42-3.32 1.22-4.75.14-.28.32-.54.54-.76.45-.45 1.03-.72 1.63-.8.29-.04.59-.06.9-.06 1.07 0 2.08.31 2.93.91.4.29.67.68.79 1.15.15.54-.03 1.08-.45 1.48-.48.45-1.08.72-1.7.8-.3.04-.6.06-.9.06z"/></svg>
                 Contáctanos por WhatsApp
             </button>
             <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">Respuesta inmediata de nuestro equipo.</p>
@@ -112,38 +130,31 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h3 class="text-3xl sm:text-4xl font-extrabold text-center text-gray-900 dark:text-white mb-12">Nuestros Niveles de Reclutamiento</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Tarjeta: Operativo y General (CAMBIO DE ESTILO CLARO) -->
+                <!-- Tarjeta: Operativo y General -->
                 <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border-t-4 border-blue-500 hover:shadow-2xl transition duration-300">
                     <div class="text-4xl mb-4 text-blue-500">⚙️</div>
-                    <!-- Texto de encabezado con color blanco sutil en dark mode -->
                     <h4 class="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-200">Nivel Operativo</h4>
-                    <!-- Párrafo con color blanco sutil/diminuto en dark mode -->
                     <p class="text-gray-700 dark:text-gray-400">Reclutamiento masivo y especializado para puestos base: Ayudantes Generales, Personal de Línea de Producción, Operadores, Almacenistas y Personal de Limpieza.</p>
                 </div>
 
-                <!-- Tarjeta: Administrativo y Especializado (CAMBIO DE ESTILO CLARO) -->
+                <!-- Tarjeta: Administrativo y Especializado -->
                 <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border-t-4 border-green-500 hover:shadow-2xl transition duration-300">
                     <div class="text-4xl mb-4 text-green-500">💼</div>
-                    <!-- Texto de encabezado con color blanco sutil en dark mode -->
                     <h4 class="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-200">Administrativo & Técnico</h4>
-                    <!-- Párrafo con color blanco sutil/diminuto en dark mode -->
                     <p class="text-gray-700 dark:text-gray-400">Búsqueda de especialistas: Contadores, Ejecutivos de Ventas, Marketing Digital, Ingenieros (Mecánicos, Industriales, Sistemas) y Personal de RH.</p>
                 </div>
 
-                <!-- Tarjeta: Gerencial y Directivo (CAMBIO DE ESTILO CLARO) -->
+                <!-- Tarjeta: Gerencial y Directivo -->
                 <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border-t-4 border-yellow-500 hover:shadow-2xl transition duration-300">
-                    <!-- Emoji cambiado a ⭐ para simbolizar alto nivel/CEO -->
                     <div class="text-4xl mb-4 text-yellow-500">⭐</div>
-                    <!-- Texto de encabezado con color blanco sutil en dark mode -->
                     <h4 class="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-200">Directivo y Gerencial</h4>
-                    <!-- Párrafo con color blanco sutil/diminuto en dark mode -->
                     <p class="text-gray-700 dark:text-gray-400">Headhunting de alto nivel para roles clave: Gerentes de Planta, Directores de Operaciones, CFOs, CEOs y posiciones estratégicas.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sección de Proceso (CAMBIO DE ESTILO CLARO) -->
+    <!-- Sección de Proceso -->
     <section id="proceso" class="py-20 sm:py-24 bg-blue-50 dark:bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h3 class="text-3xl sm:text-4xl font-extrabold text-center text-gray-900 dark:text-white mb-16">Nuestro Proceso Simplificado</h3>
@@ -222,13 +233,15 @@
 
             <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
                 <!-- Botón de WhatsApp - Contacto Principal -->
-                <button onclick="contactWhatsApp('main')" class="whatsapp-btn bg-green-500 text-white text-lg font-bold px-8 py-3 rounded-full hover:bg-green-600 shadow-xl">
+                <!-- Ahora usa data-type="main" y el listener genérico en JS -->
+                <button class="whatsapp-btn bg-green-500 text-white text-lg font-bold px-8 py-3 rounded-full hover:bg-green-600 shadow-xl" data-type="main">
                     <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C7.38 2 3.5 5.8 3.5 10.45c0 1.54.43 3.05 1.25 4.37L3 21.05l5.44-1.46c1.23.68 2.65 1.07 4.08 1.07C16.7 20.66 21 16.36 21 11.01 21 6.36 17.16 2 12.04 2z"/></svg>
                     Contactar Vía WhatsApp
                 </button>
 
-                <!-- Botón de WhatsApp - Perfiles Especializados (Ejemplo de función) -->
-                <button onclick="contactWhatsApp('especializados')" class="whatsapp-btn bg-blue-500 text-white text-lg font-bold px-8 py-3 rounded-full hover:bg-blue-600 shadow-xl">
+                <!-- Botón de WhatsApp - Perfiles Especializados -->
+                <!-- Ahora usa data-type="especializados" y el listener genérico en JS -->
+                <button class="whatsapp-btn bg-blue-500 text-white text-lg font-bold px-8 py-3 rounded-full hover:bg-blue-600 shadow-xl" data-type="especializados">
                     <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C7.38 2 3.5 5.8 3.5 10.45c0 1.54.43 3.05 1.25 4.37L3 21.05l5.44-1.46c1.23.68 2.65 1.07 4.08 1.07C16.7 20.66 21 16.36 21 11.01 21 6.36 17.16 2 12.04 2z"/></svg>
                     Perfiles Técnicos/Directivos
                 </button>
@@ -277,11 +290,17 @@
             document.getElementById('customModal').classList.add('hidden');
         }
 
+        // ---------------------------------------------------------------------
+        // Lógica de Contacto por WhatsApp (Refactorizada)
+        // ---------------------------------------------------------------------
+
         /**
-         * Función para contactar por WhatsApp con un mensaje predefinido.
-         * @param {string} type Tipo de contacto para personalizar el mensaje.
+         * Función para contactar por WhatsApp con un mensaje predefinido basado en el data-type.
+         * @param {HTMLElement} element El botón que fue presionado, el cual contiene el data-type.
          */
-        function contactWhatsApp(type) {
+        function contactWhatsApp(element) {
+            // Lee el tipo de mensaje del atributo data-type del botón, o usa 'default' si no existe
+            const type = element.dataset.type || 'default';
             let message = '';
 
             switch (type) {
@@ -350,25 +369,52 @@
             }
         }
 
-        // Inicializar el tema al cargar la página
+        // ---------------------------------------------------------------------
+        // Lógica del Menú Móvil
+        // ---------------------------------------------------------------------
+
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuIcon = document.getElementById('menuIcon');
+        const closeIcon = document.getElementById('closeIcon');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        });
+
+        // Cierra el menú móvil cuando se hace clic en cualquier enlace
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            });
+        });
+
+
+        // ---------------------------------------------------------------------
+        // Listeners Globales
+        // ---------------------------------------------------------------------
+
+        // 1. Inicializar el tema al cargar la página
         initTheme();
 
-        // Listener para el botón de alternar
+        // 2. Listener para el botón de alternar el Modo Oscuro
         darkModeToggle.addEventListener('click', () => {
             const isCurrentlyDark = body.classList.contains('dark');
             setDarkMode(!isCurrentlyDark);
         });
-
-        // ---------------------------------------------------------------------
-        // Funciones Extra/Indispensables
-        // ---------------------------------------------------------------------
-
-        // Asigna la función de contacto al botón principal del hero section
-        document.getElementById('mainWhatsappBtn').addEventListener('click', () => {
-            contactWhatsApp('main');
+        
+        // 3. Listener genérico para TODOS los botones con la clase 'whatsapp-btn' (el refactor)
+        document.querySelectorAll('.whatsapp-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                contactWhatsApp(button);
+            });
         });
 
-        // Función de Desplazamiento Suave (Smooth Scroll)
+        // 4. Función de Desplazamiento Suave (Smooth Scroll)
         // Permite que los enlaces del navbar se desplacen suavemente a las secciones
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -379,10 +425,8 @@
             });
         });
 
-        // Función de Feedback: Muestra un mensaje en consola al visitar la página
+        // 5. Función de Feedback: Muestra un mensaje en consola al visitar la página
         console.log("¡Bienvenido al sitio web de reclutamiento TalentoConnect! Gracias por visitarnos.");
-
     </script>
 </body>
-
 </html>
