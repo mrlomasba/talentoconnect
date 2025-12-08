@@ -21,10 +21,16 @@
             background-color: #0d1117;
             color: #c9d1d9;
         }
+        /* Aseguramos que los elementos que usan bg-white en light mode se vean oscuros en dark mode */
         .dark .bg-white {
             background-color: #161b22;
         }
-        .dark .text-gray-900 {
+        /* Aseguramos que los elementos que usan el nuevo bg-gray-50 en light mode se vean oscuros en dark mode */
+        .dark .bg-gray-50 {
+            background-color: #0d1117; /* El mismo color del body para un look uniforme en oscuro */
+        }
+        /* Asegura que el texto negro del modo claro se vea blanco en modo oscuro */
+        .dark .text-black { 
             color: #c9d1d9;
         }
         .dark .text-gray-700 {
@@ -51,45 +57,147 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.5), 0 4px 6px -4px rgba(34, 197, 94, 0.5);
         }
-        /* Estilo para el botón de Dark/Light Mode */
-        #darkModeToggle {
-            cursor: pointer;
-            z-index: 50; /* Para que esté siempre encima */
+        
+        /* --------------------------------------------------------------------- */
+        /* CSS para el Switch Minimalista de Modo Oscuro */
+        /* --------------------------------------------------------------------- */
+        
+        /* El checkbox está oculto, usamos el selector :checked para mover el dot */
+        #darkModeToggle:checked + .track {
+            background-color: #3b82f6; /* Pista azul cuando está en modo oscuro */
         }
+        /* Mueve el 'dot' a la derecha cuando está en modo oscuro (checked) */
+        #darkModeToggle:checked ~ .dot {
+            transform: translateX(100%);
+            background-color: #fcd34d; /* Dot amarillo que simula la luna/estrella */
+        }
+        /* Sombra sutil para el interruptor */
+        .dot {
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        /* --------------------------------------------------------------------- */
+        /* CSS para el Carrusel de Logos (Infinite Scroll) */
+        /* --------------------------------------------------------------------- */
+        .carousel-container {
+            /* Crea un degradado para que los logos se desvanezcan en los bordes */
+            -webkit-mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+            mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+        }
+
+        /* Definición de la animación: Mueve el track a la izquierda el 50% de su ancho */
+        @keyframes scroll-logos {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); } 
+        }
+
+        .logo-track {
+            animation: scroll-logos 30s linear infinite; /* Animación constante y continua */
+            width: 200%; /* El ancho total es el doble del conjunto de logos */
+            display: flex;
+            gap: 2rem; /* Espacio entre logos */
+            align-items: center;
+        }
+
+        .logo-item {
+            flex-shrink: 0; /* Asegura que el logo no se encoja */
+            width: 150px; /* Ancho fijo para cada logo */
+            padding: 1rem;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+        .logo-item:hover {
+            opacity: 1;
+        }
+        
+        /* Ajustes de opacidad/brillo en modo oscuro para simular logos blancos/claros */
+        .dark .logo-item img {
+            /* Invierte los colores y reduce la opacidad para simular un logo blanco o menos saturado */
+            filter: brightness(0.9) grayscale(0.2);
+        }
+
+        /* Responsive adjustments para Móviles (Asegurar fluidez y visibilidad) */
+        @media (max-width: 640px) {
+            .logo-track {
+                animation-duration: 20s; /* Más rápido en móviles para compensar la pantalla más pequeña */
+                gap: 1rem;
+            }
+            .logo-item {
+                width: 100px; /* Logos más pequeños para que quepan más en pantalla */
+            }
+        }
+
+        /* --------------------------------------------------------------------- */
+        /* NUEVO: Animaciones de Entrada (Scroll Reveal) para Tarjetas */
+        /* --------------------------------------------------------------------- */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px); /* Empieza desplazado hacia abajo */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        /* Clase que se agrega con JS cuando el elemento es visible */
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Retrasos para efecto escalonado (stagger) */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Ajuste para mantener el Embudo de Candidatos visible en escritorio */
+        @media (min-width: 768px) {
+            .md\:top-20 {
+                top: 5rem; /* Asegura que no se oculte detrás del header fijo */
+            }
+        }
+        
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 min-h-screen">
+<!-- Fondo del cuerpo a gris 50 (blanco sutil) -->
+<body class="bg-gray-50 text-black min-h-screen">
 
     <!-- Header / Navbar con Modo Oscuro -->
-    <header class="sticky top-0 bg-white shadow-md z-40">
+    <!-- Fondo del header a gris 50 (blanco sutil) -->
+    <header class="sticky top-0 bg-gray-50 shadow-md z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <h1 class="text-3xl font-extrabold text-blue-600">
+            <!-- LOGO: Azul a Negro en modo claro. Se mantiene azul en modo oscuro. -->
+            <h1 class="text-3xl font-extrabold text-black dark:text-blue-600">
                 <span class="text-green-500">Talento</span>Connect
             </h1>
             
             <!-- Navegación de Escritorio -->
             <nav class="hidden md:flex space-x-6 text-lg font-medium">
-                <a href="#servicios" class="text-gray-900 dark:text-gray-300 hover:text-blue-600 transition duration-300">Servicios</a>
-                <a href="#proceso" class="text-gray-900 dark:text-gray-300 hover:text-blue-600 transition duration-300">Proceso</a>
-                <a href="#contacto" class="text-gray-900 dark:text-gray-300 hover:text-blue-600 transition duration-300">Contacto</a>
+                <!-- LINKS: Azul a Negro en modo claro -->
+                <a href="#servicios" class="text-black dark:text-gray-300 hover:text-gray-700 transition duration-300">Servicios</a>
+                <a href="#proceso" class="text-black dark:text-gray-300 hover:text-gray-700 transition duration-300">Proceso</a>
+                <a href="#contacto" class="text-black dark:text-gray-300 hover:text-gray-700 transition duration-300">Contacto</a>
             </nav>
             
             <div class="flex items-center space-x-4">
-                <!-- Botón de Modo Oscuro/Claro -->
-                <button id="darkModeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <!-- Icono de Sol (Modo Claro) -->
-                    <svg id="sun-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    <!-- Icono de Luna (Modo Oscuro) -->
-                    <svg id="moon-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-                </button>
+                
+                <!-- Switch Minimalista de Modo Oscuro/Claro (Reemplazo del Botón) -->
+                <label for="darkModeToggle" class="flex items-center cursor-pointer relative mr-2">
+                    <!-- Checkbox oculto para la funcionalidad -->
+                    <input type="checkbox" id="darkModeToggle" class="sr-only" />
+                    <!-- Toggle track (pista) -->
+                    <div class="track block bg-gray-300 dark:bg-gray-600 w-14 h-8 rounded-full transition-colors duration-300"></div>
+                    <!-- Toggle dot (interruptor) -->
+                    <!-- El círculo es negro en modo claro (bg-black) y gris claro en modo oscuro (dark:bg-gray-100) -->
+                    <div class="dot absolute left-1 top-1 bg-black dark:bg-gray-100 w-6 h-6 rounded-full transition-transform duration-300"></div>
+                </label>
+                <!-- Fin del Switch Minimalista -->
 
-                <!-- Botón de Contacto principal (visible en desktop) -->
-                <a href="https://wa.me/5215512345678" target="_blank" class="hidden md:block bg-blue-600 text-white px-5 py-2 rounded-full font-semibold hover:bg-blue-700 transition duration-300 shadow-lg" data-type="main">
+
+                <!-- Botón de Contacto principal (visible en desktop): Azul a Negro en modo claro -->
+                <a href="https://wa.me/5215512345678" target="_blank" class="hidden md:block bg-black text-white px-5 py-2 rounded-full font-semibold hover:bg-gray-800 transition duration-300 shadow-lg dark:bg-blue-600 dark:hover:bg-blue-700" data-type="main">
                     Contactar Ahora
                 </a>
 
                 <!-- Botón de Menú Móvil (Hamburguesa/Cerrar) -->
-                <button id="mobileMenuButton" class="md:hidden p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 transition-colors duration-300 focus:outline-none">
+                <button id="mobileMenuButton" class="md:hidden p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-black dark:text-gray-200 transition-colors duration-300 focus:outline-none">
                     <svg id="menuIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                     <svg id="closeIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
@@ -98,58 +206,79 @@
     </header>
 
     <!-- Menú Móvil Desplegable -->
-    <div id="mobileMenu" class="md:hidden hidden bg-white dark:bg-gray-800 shadow-xl border-t border-gray-200 dark:border-gray-700">
+    <!-- Fondo del menú móvil a gris 50 (blanco sutil) -->
+    <div id="mobileMenu" class="md:hidden hidden bg-gray-50 dark:bg-gray-800 shadow-xl border-t border-gray-200 dark:border-gray-700">
         <div class="flex flex-col p-4 space-y-3">
-            <a href="#servicios" class="text-gray-900 dark:text-gray-300 hover:text-blue-600 font-semibold p-2 border-b border-gray-100 dark:border-gray-700 transition duration-300">Servicios</a>
-            <a href="#proceso" class="text-gray-900 dark:text-gray-300 hover:text-blue-600 font-semibold p-2 border-b border-gray-100 dark:border-gray-700 transition duration-300">Proceso</a>
-            <a href="#contacto" class="text-gray-900 dark:text-gray-300 hover:text-blue-600 font-semibold p-2 transition duration-300">Contacto</a>
+            <!-- LINKS: Azul a Negro en modo claro -->
+            <a href="#servicios" class="text-black dark:text-gray-300 hover:text-gray-700 font-semibold p-2 border-b border-gray-100 dark:border-gray-700 transition duration-300">Servicios</a>
+            <a href="#proceso" class="text-black dark:text-gray-300 hover:text-gray-700 font-semibold p-2 border-b border-gray-100 dark:border-gray-700 transition duration-300">Proceso</a>
+            <a href="#contacto" class="text-black dark:text-gray-300 hover:text-gray-700 font-semibold p-2 transition duration-300">Contacto</a>
         </div>
     </div>
 
     <!-- Sección Principal / Hero -->
-    <main class="pt-16 pb-20 sm:pt-20 sm:pb-32 bg-gradient-to-br from-white to-blue-50 dark:from-gray-900 dark:to-gray-800">
+    <!-- Fondo del hero a gris 50 (blanco sutil) -->
+    <main class="pt-16 pb-20 sm:pt-20 sm:pb-32 bg-gray-50 dark:from-gray-900 dark:to-gray-800 dark:bg-gradient-to-br">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6">
-                El <span class="text-blue-600">Talento</span> que tu Empresa Necesita, <span class="text-green-600 dark:text-green-400">Garantizado</span>.
+            <h2 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-black dark:text-white mb-6">
+                <!-- ACENTO: Azul a Negro en modo claro -->
+                El <span class="text-black dark:text-blue-600">Talento</span> que tu Empresa Necesita, <span class="text-green-600 dark:text-green-400">Garantizado</span>.
             </h2>
             <p class="text-xl sm:text-2xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto mb-10">
                 Somos tu socio estratégico en reclutamiento, cubriendo **todos los niveles** de perfiles: desde ayudantes generales hasta directivos e ingenieros especializados.
             </p>
 
             <!-- CTA principal con WhatsApp -->
-            <!-- NOTA: Se ha añadido data-type="main" y la funcionalidad se asigna en JS -->
             <button id="mainWhatsappBtn" class="whatsapp-btn bg-green-500 text-white text-xl font-bold px-10 py-4 rounded-xl shadow-2xl shadow-green-500/50 hover:bg-green-600" data-type="main">
-                <!-- Icono de WhatsApp (SVG) -->
-                <svg class="w-7 h-7 mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C7.38 2 3.5 5.8 3.5 10.45c0 1.54.43 3.05 1.25 4.37L3 21.05l5.44-1.46c1.23.68 2.65 1.07 4.08 1.07C16.7 20.66 21 16.36 21 11.01 21 6.36 17.16 2 12.04 2zm3.84 14.37c-.15.4-.55.66-1.01.81-1.07.36-2.3.56-3.56.56-2.52 0-4.82-1.01-6.55-2.73-1.63-1.63-2.6-3.8-2.6-6.15 0-1.7.42-3.32 1.22-4.75.14-.28.32-.54.54-.76.45-.45 1.03-.72 1.63-.8.29-.04.59-.06.9-.06 1.07 0 2.08.31 2.93.91.4.29.67.68.79 1.15.15.54-.03 1.08-.45 1.48-.48.45-1.08.72-1.7.8-.3.04-.6.06-.9.06z"/></svg>
+                <!-- Icono simple (solo burbuja) -->
+                <svg class="w-7 h-7 mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C7.38 2 3.5 5.8 3.5 10.45c0 1.54.43 3.05 1.25 4.37L3 21.05l5.44-1.46c1.23.68 2.65 1.07 4.08 1.07C16.7 20.66 21 16.36 21 11.01 21 6.36 17.16 2 12.04 2z"/></svg>
                 Contáctanos por WhatsApp
             </button>
             <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">Respuesta inmediata de nuestro equipo.</p>
         </div>
     </main>
 
+    <!-- Sección: Empresas que Confían en Nosotros (Carrusel de Logos) -->
+    <section id="confianza" class="py-12 sm:py-16 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
+            <h3 class="text-xl sm:text-2xl font-bold text-center text-gray-500 dark:text-gray-300 mb-8 uppercase tracking-widest">
+                Confían en Nuestro Talento
+            </h3>
+            
+            <!-- Contenedor del Carrusel (oculta el overflow y aplica el degradado) -->
+            <div class="carousel-container overflow-hidden relative">
+                <!-- Track de los Logos (donde ocurre la animación) -->
+                <div id="logo-track" class="logo-track">
+                    <!-- Los logos serán insertados aquí por JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Sección de Servicios (Tipos de Perfiles) -->
-    <section id="servicios" class="py-20 sm:py-24 bg-white dark:bg-gray-900">
+    <!-- Fondo de servicios a gris 50 (blanco sutil) -->
+    <section id="servicios" class="py-20 sm:py-24 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 class="text-3xl sm:text-4xl font-extrabold text-center text-gray-900 dark:text-white mb-12">Nuestros Niveles de Reclutamiento</h3>
+            <h3 class="text-3xl sm:text-4xl font-extrabold text-center text-black dark:text-white mb-12">Nuestros Niveles de Reclutamiento</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Tarjeta: Operativo y General -->
-                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border-t-4 border-blue-500 hover:shadow-2xl transition duration-300">
-                    <div class="text-4xl mb-4 text-blue-500">⚙️</div>
-                    <h4 class="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-200">Nivel Operativo</h4>
+                <!-- Tarjeta 1: ANIMACIÓN AÑADIDA: fade-in-up delay-100 y hover:-translate-y-2 -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border-t-4 border-black dark:border-blue-500 hover:shadow-2xl transition duration-300 hover:-translate-y-2 fade-in-up delay-100">
+                    <div class="text-4xl mb-4 text-black dark:text-blue-500">⚙️</div>
+                    <h4 class="text-2xl font-bold mb-3 text-black dark:text-gray-200">Nivel Operativo</h4>
                     <p class="text-gray-700 dark:text-gray-400">Reclutamiento masivo y especializado para puestos base: Ayudantes Generales, Personal de Línea de Producción, Operadores, Almacenistas y Personal de Limpieza.</p>
                 </div>
 
-                <!-- Tarjeta: Administrativo y Especializado -->
-                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border-t-4 border-green-500 hover:shadow-2xl transition duration-300">
+                <!-- Tarjeta 2: ANIMACIÓN AÑADIDA: fade-in-up delay-200 y hover:-translate-y-2 -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border-t-4 border-green-500 hover:shadow-2xl transition duration-300 hover:-translate-y-2 fade-in-up delay-200">
                     <div class="text-4xl mb-4 text-green-500">💼</div>
-                    <h4 class="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-200">Administrativo & Técnico</h4>
+                    <h4 class="text-2xl font-bold mb-3 text-black dark:text-gray-200">Administrativo & Técnico</h4>
                     <p class="text-gray-700 dark:text-gray-400">Búsqueda de especialistas: Contadores, Ejecutivos de Ventas, Marketing Digital, Ingenieros (Mecánicos, Industriales, Sistemas) y Personal de RH.</p>
                 </div>
 
-                <!-- Tarjeta: Gerencial y Directivo -->
-                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border-t-4 border-yellow-500 hover:shadow-2xl transition duration-300">
+                <!-- Tarjeta 3: ANIMACIÓN AÑADIDA: fade-in-up delay-300 y hover:-translate-y-2 -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border-t-4 border-yellow-500 hover:shadow-2xl transition duration-300 hover:-translate-y-2 fade-in-up delay-300">
                     <div class="text-4xl mb-4 text-yellow-500">⭐</div>
-                    <h4 class="text-2xl font-bold mb-3 text-gray-900 dark:text-gray-200">Directivo y Gerencial</h4>
+                    <h4 class="text-2xl font-bold mb-3 text-black dark:text-gray-200">Directivo y Gerencial</h4>
                     <p class="text-gray-700 dark:text-gray-400">Headhunting de alto nivel para roles clave: Gerentes de Planta, Directores de Operaciones, CFOs, CEOs y posiciones estratégicas.</p>
                 </div>
             </div>
@@ -157,71 +286,119 @@
     </section>
 
     <!-- Sección de Proceso -->
-    <section id="proceso" class="py-20 sm:py-24 bg-blue-50 dark:bg-gray-800">
+    <!-- Fondo de proceso a gris 50 (blanco sutil) -->
+    <section id="proceso" class="py-20 sm:py-24 bg-gray-50 dark:bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 class="text-3xl sm:text-4xl font-extrabold text-center text-gray-900 dark:text-white mb-16">Nuestro Proceso Simplificado</h3>
-            <div class="relative">
-                <!-- Línea de tiempo responsive -->
-                <div class="hidden md:block absolute h-full w-0.5 bg-blue-300 dark:bg-blue-600 left-1/2 transform -translate-x-1/2"></div>
+            <h3 class="text-3xl sm:text-4xl font-extrabold text-center text-black dark:text-white mb-16">Nuestro Proceso Simplificado</h3>
+            
+            <!-- Contenedor Flex para la Línea de Tiempo y la Gráfica (visible en md: y superiores) -->
+            <!-- En móvil (flex-col-reverse), la gráfica aparece después de la línea de tiempo para mejor flujo de lectura -->
+            <div class="flex flex-col-reverse md:flex-row gap-8 items-start">
+                
+                <!-- Bloque de la Línea de Tiempo Existente (ocupa 2/3 en desktop) -->
+                <div class="w-full md:w-2/3 relative">
+                    <!-- Línea de tiempo vertical: Azul a Gris en modo claro -->
+                    <div class="hidden md:block absolute h-full w-0.5 bg-gray-400 dark:bg-blue-600 left-1/2 transform -translate-x-1/2"></div>
 
-                <div class="space-y-12">
-                    <!-- Paso 1 -->
-                    <div class="flex flex-col md:flex-row items-center md:even:flex-row-reverse">
-                        <div class="md:w-1/2 p-4 text-center md:text-right md:even:text-left">
-                            <div class="bg-blue-600 text-white font-extrabold text-xl w-10 h-10 flex items-center justify-center rounded-full mx-auto md:mx-0 md:even:ml-auto md:even:mr-0 mb-3 md:hidden">1</div>
-                            <h4 class="text-2xl font-semibold text-gray-900 dark:text-white">1. Definición del Perfil</h4>
-                            <p class="mt-2 text-gray-700 dark:text-gray-300">Entendemos profundamente la cultura de tu empresa y las responsabilidades exactas del puesto para crear una estrategia de búsqueda precisa.</p>
+                    <div class="space-y-12">
+                        <!-- Paso 1: Azul a Negro en modo claro -->
+                        <div class="flex flex-col md:flex-row items-center md:even:flex-row-reverse">
+                            <div class="md:w-1/2 p-4 text-center md:text-right md:even:text-left">
+                                <div class="bg-black text-white font-extrabold text-xl w-10 h-10 flex items-center justify-center rounded-full mx-auto md:mx-0 md:even:ml-auto md:even:mr-0 mb-3 md:hidden dark:bg-blue-600">1</div>
+                                <h4 class="text-2xl font-semibold text-black dark:text-white">1. Definición del Perfil</h4>
+                                <p class="mt-2 text-gray-700 dark:text-gray-300">Entendemos profundamente la cultura de tu empresa y las responsabilidades exactas del puesto para crear una estrategia de búsqueda precisa.</p>
+                            </div>
+                            <div class="hidden md:block md:w-1/12 p-4">
+                                <div class="bg-black text-white font-extrabold text-xl w-12 h-12 flex items-center justify-center rounded-full shadow-xl ring-4 ring-gray-300 dark:bg-blue-600 dark:ring-blue-800 mx-auto">1</div>
+                            </div>
+                            <div class="hidden md:block md:w-1/2"></div>
                         </div>
-                        <div class="hidden md:block md:w-1/12 p-4">
-                            <div class="bg-blue-600 text-white font-extrabold text-xl w-12 h-12 flex items-center justify-center rounded-full shadow-xl ring-4 ring-blue-200 dark:ring-blue-800 mx-auto">1</div>
+
+                        <!-- Paso 2 (Green - Inalterado) -->
+                        <div class="flex flex-col md:flex-row items-center md:even:flex-row-reverse">
+                            <div class="hidden md:block md:w-1/2"></div>
+                            <div class="hidden md:block md:w-1/12 p-4">
+                                <div class="bg-green-600 text-white font-extrabold text-xl w-12 h-12 flex items-center justify-center rounded-full shadow-xl ring-4 ring-green-200 dark:ring-green-800 mx-auto">2</div>
+                            </div>
+                            <div class="md:w-1/2 p-4 text-center md:text-left md:even:text-right">
+                                <div class="bg-green-600 text-white font-extrabold text-xl w-10 h-10 flex items-center justify-center rounded-full mx-auto md:mx-0 md:even:mr-auto md:even:ml-0 mb-3 md:hidden">2</div>
+                                <h4 class="text-2xl font-semibold text-black dark:text-white">2. Búsqueda y Filtrado Activo</h4>
+                                <p class="mt-2 text-gray-700 dark:text-gray-300">Utilizamos múltiples canales de Headhunting y filtros avanzados para identificar a los candidatos que realmente cumplen con los requisitos técnicos y culturales.</p>
+                            </div>
                         </div>
-                        <div class="hidden md:block md:w-1/2"></div>
+
+                        <!-- Paso 3 (Yellow - Inalterado) -->
+                        <div class="flex flex-col md:flex-row items-center md:even:flex-row-reverse">
+                            <div class="md:w-1/2 p-4 text-center md:text-right md:even:text-left">
+                                <div class="bg-yellow-600 text-white font-extrabold text-xl w-10 h-10 flex items-center justify-center rounded-full mx-auto md:mx-0 md:even:ml-auto md:even:mr-0 mb-3 md:hidden">3</div>
+                                <h4 class="text-2xl font-semibold text-black dark:text-white">3. Evaluación y Presentación</h4>
+                                <p class="mt-2 text-gray-700 dark:text-gray-300">Realizamos entrevistas profundas, evaluaciones de habilidades y presentamos solo a los 3-5 mejores candidatos pre-calificados a tu equipo.</p>
+                            </div>
+                            <div class="hidden md:block md:w-1/12 p-4">
+                                <div class="bg-yellow-600 text-white font-extrabold text-xl w-12 h-12 flex items-center justify-center rounded-full shadow-xl ring-4 ring-yellow-200 dark:ring-yellow-800 mx-auto">3</div>
+                            </div>
+                            <div class="hidden md:block md:w-1/2"></div>
+                        </div>
+
+                        <!-- Paso 4 (Red - Inalterado) -->
+                        <div class="flex flex-col md:flex-row items-center md:even:flex-row-reverse">
+                            <div class="hidden md:block md:w-1/2"></div>
+                            <div class="hidden md:block md:w-1/12 p-4">
+                                <div class="bg-red-600 text-white font-extrabold text-xl w-12 h-12 flex items-center justify-center rounded-full shadow-xl ring-4 ring-red-200 dark:ring-red-800 mx-auto">4</div>
+                            </div>
+                            <div class="md:w-1/2 p-4 text-center md:text-left md:even:text-right">
+                                <div class="bg-red-600 text-white font-extrabold text-xl w-10 h-10 flex items-center justify-center rounded-full mx-auto md:mx-0 md:even:mr-auto md:even:ml-0 mb-3 md:hidden">4</div>
+                                <h4 class="text-2xl font-semibold text-black dark:text-white">4. Seguimiento y Garantía</h4>
+                                <p class="mt-2 text-gray-700 dark:text-gray-300">Apoyamos en la negociación de la oferta y realizamos un seguimiento post-contratación para asegurar una integración exitosa. Ofrecemos garantía de reemplazo.</p>
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-                    <!-- Paso 2 -->
-                    <div class="flex flex-col md:flex-row items-center md:even:flex-row-reverse">
-                        <div class="hidden md:block md:w-1/2"></div>
-                        <div class="hidden md:block md:w-1/12 p-4">
-                            <div class="bg-green-600 text-white font-extrabold text-xl w-12 h-12 flex items-center justify-center rounded-full shadow-xl ring-4 ring-green-200 dark:ring-green-800 mx-auto">2</div>
-                        </div>
-                        <div class="md:w-1/2 p-4 text-center md:text-left md:even:text-right">
-                            <div class="bg-green-600 text-white font-extrabold text-xl w-10 h-10 flex items-center justify-center rounded-full mx-auto md:mx-0 md:even:mr-auto md:even:ml-0 mb-3 md:hidden">2</div>
-                            <h4 class="text-2xl font-semibold text-gray-900 dark:text-white">2. Búsqueda y Filtrado Activo</h4>
-                            <p class="mt-2 text-gray-700 dark:text-gray-300">Utilizamos múltiples canales de Headhunting y filtros avanzados para identificar a los candidatos que realmente cumplen con los requisitos técnicos y culturales.</p>
-                        </div>
-                    </div>
+                <!-- Bloque de la Gráfica/Funnel (ocupa 1/3 en desktop) -->
+                <div class="w-full md:w-1/3 p-4">
+                    <div id="process-funnel" class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-lg border-l-4 border-r-4 border-gray-200 dark:border-gray-600 sticky md:top-20">
+                        <h4 class="text-xl font-bold mb-4 text-center text-black dark:text-white">Embudo de Candidatos</h4>
+                        <!-- SVG Funnel (Gráfica) -->
+                        <svg viewBox="0 0 300 350" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+                            
+                            <!-- 1. Definición del Perfil (Azul) - Top / Wider Section -->
+                            <g class="transition-transform duration-500 hover:scale-[1.02] transform origin-center">
+                                <polygon points="50,20 250,20 230,100 70,100" fill="#2563EB" class="dark:fill-[#1e40af] transition duration-300"/>
+                                <text x="150" y="60" font-size="14" font-weight="bold" fill="white" text-anchor="middle">1. Definición (100% Volumen)</text>
+                            </g>
 
-                    <!-- Paso 3 -->
-                    <div class="flex flex-col md:flex-row items-center md:even:flex-row-reverse">
-                        <div class="md:w-1/2 p-4 text-center md:text-right md:even:text-left">
-                            <div class="bg-yellow-600 text-white font-extrabold text-xl w-10 h-10 flex items-center justify-center rounded-full mx-auto md:mx-0 md:even:ml-auto md:even:mr-0 mb-3 md:hidden">3</div>
-                            <h4 class="text-2xl font-semibold text-gray-900 dark:text-white">3. Evaluación y Presentación</h4>
-                            <p class="mt-2 text-gray-700 dark:text-gray-300">Realizamos entrevistas profundas, evaluaciones de habilidades y presentamos solo a los 3-5 mejores candidatos pre-calificados a tu equipo.</p>
-                        </div>
-                        <div class="hidden md:block md:w-1/12 p-4">
-                            <div class="bg-yellow-600 text-white font-extrabold text-xl w-12 h-12 flex items-center justify-center rounded-full shadow-xl ring-4 ring-yellow-200 dark:ring-yellow-800 mx-auto">3</div>
-                        </div>
-                        <div class="hidden md:block md:w-1/2"></div>
-                    </div>
+                            <!-- 2. Búsqueda y Filtrado Activo (Verde) -->
+                            <g class="transition-transform duration-500 hover:scale-[1.02] transform origin-center">
+                                <polygon points="70,100 230,100 210,180 90,180" fill="#10B981" class="dark:fill-[#059669] transition duration-300"/>
+                                <text x="150" y="140" font-size="14" font-weight="bold" fill="white" text-anchor="middle">2. Filtrado (40% Restante)</text>
+                            </g>
 
-                    <!-- Paso 4 -->
-                    <div class="flex flex-col md:flex-row items-center md:even:flex-row-reverse">
-                        <div class="hidden md:block md:w-1/2"></div>
-                        <div class="hidden md:block md:w-1/12 p-4">
-                            <div class="bg-red-600 text-white font-extrabold text-xl w-12 h-12 flex items-center justify-center rounded-full shadow-xl ring-4 ring-red-200 dark:ring-red-800 mx-auto">4</div>
-                        </div>
-                        <div class="md:w-1/2 p-4 text-center md:text-left md:even:text-right">
-                            <div class="bg-red-600 text-white font-extrabold text-xl w-10 h-10 flex items-center justify-center rounded-full mx-auto md:mx-0 md:even:mr-auto md:even:ml-0 mb-3 md:hidden">4</div>
-                            <h4 class="text-2xl font-semibold text-gray-900 dark:text-white">4. Seguimiento y Garantía</h4>
-                            <p class="mt-2 text-gray-700 dark:text-gray-300">Apoyamos en la negociación de la oferta y realizamos un seguimiento post-contratación para asegurar una integración exitosa. Ofrecemos garantía de reemplazo.</p>
-                        </div>
+                            <!-- 3. Evaluación y Presentación (Amarillo) -->
+                            <g class="transition-transform duration-500 hover:scale-[1.02] transform origin-center">
+                                <polygon points="90,180 210,180 190,260 110,260" fill="#F59E0B" class="dark:fill-[#d97706] transition duration-300"/>
+                                <text x="150" y="220" font-size="14" font-weight="bold" fill="white" text-anchor="middle">3. Evaluación (10% Final)</text>
+                            </g>
+
+                            <!-- 4. Seguimiento y Garantía (Rojo) - Bottom / Narrowest Section -->
+                            <g class="transition-transform duration-500 hover:scale-[1.02] transform origin-center">
+                                <polygon points="110,260 190,260 170,340 130,340" fill="#EF4444" class="dark:fill-[#dc2626] transition duration-300"/>
+                                <text x="150" y="300" font-size="14" font-weight="bold" fill="white" text-anchor="middle">4. Contratación (Éxito)</text>
+                            </g>
+
+                            <!-- Líneas de Separación -->
+                            <line x1="70" y1="100" x2="230" y2="100" stroke="#0d1117" stroke-width="2" class="dark:stroke-white transition duration-300"/>
+                            <line x1="90" y1="180" x2="210" y2="180" stroke="#0d1117" stroke-width="2" class="dark:stroke-white transition duration-300"/>
+                            <line x1="110" y1="260" x2="190" y2="260" stroke="#0d1117" stroke-width="2" class="dark:stroke-white transition duration-300"/>
+                        </svg>
+                        <!-- Fin SVG Funnel -->
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sección de Contacto Rápido / Footer -->
+    <!-- Sección de Contacto Rápido / Footer (INTACTO según solicitud) -->
     <footer id="contacto" class="py-12 bg-gray-900 dark:bg-black text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h3 class="text-3xl font-extrabold mb-4">¿Listo para Contratar al Mejor Talento?</h3>
@@ -235,15 +412,16 @@
 
             <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
                 <!-- Botón de WhatsApp - Contacto Principal -->
-                <!-- Ahora usa data-type="main" y el listener genérico en JS -->
                 <button class="whatsapp-btn bg-green-500 text-white text-lg font-bold px-8 py-3 rounded-full hover:bg-green-600 shadow-xl" data-type="main">
+                    <!-- Icono simple (solo burbuja) -->
                     <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C7.38 2 3.5 5.8 3.5 10.45c0 1.54.43 3.05 1.25 4.37L3 21.05l5.44-1.46c1.23.68 2.65 1.07 4.08 1.07C16.7 20.66 21 16.36 21 11.01 21 6.36 17.16 2 12.04 2z"/></svg>
                     Contactar Vía WhatsApp
                 </button>
 
                 <!-- Botón de WhatsApp - Perfiles Especializados -->
-                <!-- Ahora usa data-type="especializados" y el listener genérico en JS -->
+                <!-- Este botón usa azul y se mantiene así en el footer (tema oscuro) -->
                 <button class="whatsapp-btn bg-blue-500 text-white text-lg font-bold px-8 py-3 rounded-full hover:bg-blue-600 shadow-xl" data-type="especializados">
+                    <!-- Icono simple (solo burbuja) -->
                     <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C7.38 2 3.5 5.8 3.5 10.45c0 1.54.43 3.05 1.25 4.37L3 21.05l5.44-1.46c1.23.68 2.65 1.07 4.08 1.07C16.7 20.66 21 16.36 21 11.01 21 6.36 17.16 2 12.04 2z"/></svg>
                     Perfiles Técnicos/Directivos
                 </button>
@@ -265,6 +443,7 @@
     <!-- MODAL SIMPLE DE MENSAJE (Sustituye a alert()) -->
     <div id="customModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
         <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-2xl max-w-sm w-full transform transition-all scale-100 dark:text-white">
+            <!-- Los colores del modal (Título azul, botón azul) se mantienen por defecto para usabilidad, ya que no están en el cuerpo principal de la página. -->
             <h5 id="modalTitle" class="text-xl font-bold mb-3 text-blue-600 dark:text-blue-400">Mensaje</h5>
             <p id="modalMessage" class="text-gray-700 dark:text-gray-300 mb-6">El mensaje de la aplicación se mostrará aquí.</p>
             <button onclick="closeModal()" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition duration-200">Aceptar</button>
@@ -329,12 +508,10 @@
         }
 
         // ---------------------------------------------------------------------
-        // Lógica del Modo Oscuro/Claro
+        // Lógica del Modo Oscuro/Claro (Actualizada para el Switch)
         // ---------------------------------------------------------------------
 
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const sunIcon = document.getElementById('sun-icon');
-        const moonIcon = document.getElementById('moon-icon');
+        const darkModeToggle = document.getElementById('darkModeToggle'); // Ahora es el Checkbox
         const body = document.body;
 
         /**
@@ -344,13 +521,11 @@
         function setDarkMode(isDark) {
             if (isDark) {
                 body.classList.add('dark');
-                sunIcon.classList.remove('hidden');
-                moonIcon.classList.add('hidden');
+                darkModeToggle.checked = true; // Sincroniza el estado del checkbox
                 localStorage.setItem('theme', 'dark');
             } else {
                 body.classList.remove('dark');
-                moonIcon.classList.remove('hidden');
-                sunIcon.classList.add('hidden');
+                darkModeToggle.checked = false; // Sincroniza el estado del checkbox
                 localStorage.setItem('theme', 'light');
             }
         }
@@ -369,6 +544,57 @@
                 // Si no hay tema guardado, usa la preferencia del sistema
                 setDarkMode(prefersDark);
             }
+        }
+
+        // ---------------------------------------------------------------------
+        // Lógica del Carrusel de Logos (Ya implementa scroll infinito)
+        // ---------------------------------------------------------------------
+
+        function setupLogoCarousel() {
+            const logoTrack = document.getElementById('logo-track');
+            if (!logoTrack) return;
+
+            // Lista de Logos de ejemplo (usando placehold.co)
+            // Se usa el mismo color de fondo (#0d1117) que el modo oscuro para que se vean bien
+            // y con el filtro de CSS en modo oscuro, se inviertan a logos "claros" para el fondo oscuro.
+            const logos = [
+                { url: 'https://placehold.co/150x50/1e293b/FFFFFF?text=TechCorp', alt: 'TechCorp' },
+                { url: 'https://placehold.co/150x50/16a34a/FFFFFF?text=Green+Energy', alt: 'Green Energy' },
+                { url: 'https://placehold.co/150x50/be123c/FFFFFF?text=Global+Mfg', alt: 'Global Manufacturing' },
+                { url: 'https://placehold.co/150x50/4f46e5/FFFFFF?text=Innovate+X', alt: 'Innovate X' },
+                { url: 'https://placehold.co/150x50/ea580c/FFFFFF?text=Logistics+Pro', alt: 'Logistics Pro' },
+                { url: 'https://placehold.co/150x50/0891b2/FFFFFF?text=Finance+One', alt: 'Finance One' },
+                { url: 'https://placehold.co/150x50/d97706/FFFFFF?text=Retail+Giant', alt: 'Retail Giant' },
+                { url: 'https://placehold.co/150x50/a855f7/FFFFFF?text=Health+Co', alt: 'Health Co' },
+            ];
+
+            // 1. Crear elementos HTML para la lista principal de logos
+            const createLogoElement = (logo) => {
+                const logoItem = document.createElement('div');
+                logoItem.className = 'logo-item';
+                // Añadimos una imagen de fallback si la URL falla
+                const img = document.createElement('img');
+                img.src = logo.url;
+                img.alt = `Logo de ${logo.alt}`;
+                img.className = 'w-full h-auto object-contain';
+                img.onerror = function() {
+                    // Fallback simple si la imagen no carga
+                    this.src = `https://placehold.co/150x50/94a3b8/FFFFFF?text=${logo.alt.substring(0, 4)}`;
+                };
+                logoItem.appendChild(img);
+                return logoItem;
+            };
+
+            logos.forEach(logo => {
+                logoTrack.appendChild(createLogoElement(logo));
+            });
+
+            // 2. Duplicar todos los logos para crear el efecto de carrusel infinito
+            // Clonar nodos es más robusto que usar innerHTML
+            const originalLogos = Array.from(logoTrack.children);
+            originalLogos.forEach(logo => {
+                logoTrack.appendChild(logo.cloneNode(true));
+            });
         }
 
         // ---------------------------------------------------------------------
@@ -397,19 +623,45 @@
 
 
         // ---------------------------------------------------------------------
+        // NUEVO: Observador de Intersección para Animación de Tarjetas
+        // ---------------------------------------------------------------------
+        // Esto detecta cuando las tarjetas entran en la pantalla para animarlas
+        
+        const observerOptions = {
+            root: null, // viewport
+            rootMargin: '0px',
+            threshold: 0.1 // activar cuando el 10% del elemento sea visible
+        };
+
+        const cardObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Solo animar una vez
+                }
+            });
+        }, observerOptions);
+
+
+        // ---------------------------------------------------------------------
         // Listeners Globales
         // ---------------------------------------------------------------------
 
-        // 1. Inicializar el tema al cargar la página
+        // 1. Inicializar el tema y el carrusel al cargar la página
         initTheme();
-
-        // 2. Listener para el botón de alternar el Modo Oscuro
-        darkModeToggle.addEventListener('click', () => {
-            const isCurrentlyDark = body.classList.contains('dark');
-            setDarkMode(!isCurrentlyDark);
+        setupLogoCarousel(); // Carga y duplica los logos
+        
+        // Inicializar el observador para las tarjetas de animación
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            cardObserver.observe(el);
         });
         
-        // 3. Listener genérico para TODOS los botones con la clase 'whatsapp-btn' (el refactor)
+        // 2. Listener para el switch de Modo Oscuro (usa 'change' para checkbox)
+        darkModeToggle.addEventListener('change', () => {
+            setDarkMode(darkModeToggle.checked);
+        });
+        
+        // 3. Listener genérico para TODOS los botones con la clase 'whatsapp-btn'
         document.querySelectorAll('.whatsapp-btn').forEach(button => {
             button.addEventListener('click', () => {
                 contactWhatsApp(button);
@@ -417,7 +669,6 @@
         });
 
         // 4. Función de Desplazamiento Suave (Smooth Scroll)
-        // Permite que los enlaces del navbar se desplacen suavemente a las secciones
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
