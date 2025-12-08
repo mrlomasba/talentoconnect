@@ -13,8 +13,9 @@
         body {
             font-family: 'Inter', sans-serif;
             transition: background-color 0.3s, color 0.3s;
-            /* FIX: Oculta el scroll horizontal (barra blanca) que puede aparecer en móviles */
             overflow-x: hidden;
+            /* FIX CLS: Forzamos la barra de desplazamiento vertical a estar siempre visible */
+            overflow-y: scroll; 
         }
         /* Estilos para el modo oscuro */
         .dark {
@@ -59,25 +60,31 @@
         }
         
         /* --------------------------------------------------------------------- */
-        /* CSS para el Switch Minimalista de Modo Oscuro */
+        /* CSS para el Switch Minimalista de Modo Oscuro (REDUCIDO) */
         /* --------------------------------------------------------------------- */
-        
-        /* El checkbox está oculto, usamos el selector :checked para mover el dot */
         #darkModeToggle:checked + .track {
-            background-color: #3b82f6; /* Pista azul cuando está en modo oscuro */
+            background-color: #3b82f6;
         }
-        /* Mueve el 'dot' a la derecha cuando está en modo oscuro (checked) */
         #darkModeToggle:checked ~ .dot {
             transform: translateX(100%);
-            background-color: #fcd34d; /* Dot amarillo que simula la luna/estrella */
+            background-color: #fcd34d;
         }
-        /* Sombra sutil para el interruptor */
         .dot {
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.1);
         }
-
+        .track-sm {
+            width: 3.2rem;
+            height: 1.6rem;
+        }
+        .dot-sm {
+            width: 1.2rem;
+            height: 1.2rem;
+            top: 0.2rem;
+            left: 0.2rem;
+        }
+        
         /* --------------------------------------------------------------------- */
-        /* CSS para el Carrusel de Logos (Infinite Scroll) */
+        /* CSS para el Carrusel de Logos (Infinite Scroll) - FIX DEFINITIVO */
         /* --------------------------------------------------------------------- */
         .carousel-container {
             /* Crea un degradado para que los logos se desvanezcan en los bordes */
@@ -85,92 +92,95 @@
             mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
         }
 
-        /* Definición de la animación: Mueve el track a la izquierda el 50% de su ancho */
-        @keyframes scroll-logos {
-            from { transform: translateX(0); }
-            to { transform: translateX(-50%); } 
-        }
-
-        .logo-track {
-            animation: scroll-logos 30s linear infinite; /* Animación constante y continua */
-            width: 200%; /* El ancho total es el doble del conjunto de logos */
+        .carousel-track {
+            /* La animación 'scroll-logos-px' se define en JS con el ancho exacto */
+            animation: scroll-logos-px 60s linear infinite; 
+            width: max-content; 
             display: flex;
-            gap: 2rem; /* Espacio entre logos */
+            gap: 2rem; /* Espacio clave ENTRE el set original y el duplicado (32px) */
             align-items: center;
-        }
-
-        .logo-item {
-            flex-shrink: 0; /* Asegura que el logo no se encoja */
-            width: 150px; /* Ancho fijo para cada logo */
-            padding: 1rem;
-            opacity: 0.6;
-            transition: opacity 0.3s;
-        }
-        .logo-item:hover {
-            opacity: 1;
+            will-change: transform; 
+            /* Estilos del usuario para padding */
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
         }
         
-        /* Ajustes de opacidad/brillo en modo oscuro para simular logos blancos/claros */
+        .carousel-track:hover {
+            animation-play-state: paused; /* Estilo del usuario: pausa al pasar el ratón */
+        }
+
+        /* Contenedores internos de los sets */
+        #logo-set-original, #logo-set-duplicate {
+             /* El gap interno (entre logos dentro de cada set) se maneja con clases de Tailwind */
+             gap: 2rem; /* Coincide con el gap entre sets (2rem = 32px) */
+             flex-shrink: 0;
+             display: flex;
+        }
+
+        .logo-item { /* Usamos esta clase para el elemento individual */
+            flex-shrink: 0;
+            width: 150px; 
+            padding: 0.5rem; /* Ajustado para mejor control */
+            opacity: 0.8; /* Opacidad inicial del usuario */
+            transition: opacity 0.3s, transform 0.3s; /* Transición del usuario */
+        }
+        
+        .logo-item:hover {
+            opacity: 1;
+            transform: scale(1.05); /* Efecto de hover del usuario */
+        }
+        
         .dark .logo-item img {
-            /* Invierte los colores y reduce la opacidad para simular un logo blanco o menos saturado */
             filter: brightness(0.9) grayscale(0.2);
         }
 
-        /* Responsive adjustments para Móviles (Asegurar fluidez y visibilidad) */
+        /* Responsive adjustments para Móviles */
         @media (max-width: 640px) {
-            .logo-track {
-                animation-duration: 20s; /* Más rápido en móviles para compensar la pantalla más pequeña */
-                gap: 1rem;
+            .carousel-track {
+                animation-duration: 40s; /* Velocidad ajustada para pantallas pequeñas */
             }
             .logo-item {
-                width: 100px; /* Logos más pequeños para que quepan más en pantalla */
+                width: 100px; /* Logos más pequeños */
             }
         }
 
         /* --------------------------------------------------------------------- */
-        /* NUEVO: Animaciones de Entrada (Scroll Reveal) para Tarjetas */
+        /* Animaciones de Entrada (Scroll Reveal) para Tarjetas */
         /* --------------------------------------------------------------------- */
         .fade-in-up {
             opacity: 0;
-            transform: translateY(30px); /* Empieza desplazado hacia abajo */
+            transform: translateY(30px);
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
         
-        /* Clase que se agrega con JS cuando el elemento es visible */
         .fade-in-up.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Retrasos para efecto escalonado (stagger) */
         .delay-100 { transition-delay: 100ms; }
         .delay-200 { transition-delay: 200ms; }
         .delay-300 { transition-delay: 300ms; }
 
-        /* Ajuste para mantener el Embudo de Candidatos visible en escritorio */
         @media (min-width: 768px) {
             .md\:top-20 {
-                top: 5rem; /* Asegura que no se oculte detrás del header fijo */
+                top: 5rem;
             }
         }
         
     </style>
 </head>
-<!-- Fondo del cuerpo a gris 50 (blanco sutil) -->
 <body class="bg-gray-50 text-black min-h-screen">
 
     <!-- Header / Navbar con Modo Oscuro -->
-    <!-- Fondo del header a gris 50 (blanco sutil) -->
     <header class="sticky top-0 bg-gray-50 shadow-md z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <!-- LOGO: Azul a Negro en modo claro. Se mantiene azul en modo oscuro. -->
-            <h1 class="text-3xl font-extrabold text-black dark:text-blue-600">
+            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-black dark:text-blue-600">
                 <span class="text-green-500">Talento</span>Connect
             </h1>
             
             <!-- Navegación de Escritorio -->
             <nav class="hidden md:flex space-x-6 text-lg font-medium">
-                <!-- LINKS: Azul a Negro en modo claro -->
                 <a href="#servicios" class="text-black dark:text-gray-300 hover:text-gray-700 transition duration-300">Servicios</a>
                 <a href="#proceso" class="text-black dark:text-gray-300 hover:text-gray-700 transition duration-300">Proceso</a>
                 <a href="#contacto" class="text-black dark:text-gray-300 hover:text-gray-700 transition duration-300">Contacto</a>
@@ -178,20 +188,16 @@
             
             <div class="flex items-center space-x-4">
                 
-                <!-- Switch Minimalista de Modo Oscuro/Claro (Reemplazo del Botón) -->
-                <label for="darkModeToggle" class="flex items-center cursor-pointer relative mr-2">
-                    <!-- Checkbox oculto para la funcionalidad -->
+                <!-- Switch Minimalista de Modo Oscuro/Claro (REDUCIDO para móvil) -->
+                <label for="darkModeToggle" class="flex items-center cursor-pointer relative mr-1">
                     <input type="checkbox" id="darkModeToggle" class="sr-only" />
-                    <!-- Toggle track (pista) -->
-                    <div class="track block bg-gray-300 dark:bg-gray-600 w-14 h-8 rounded-full transition-colors duration-300"></div>
-                    <!-- Toggle dot (interruptor) -->
-                    <!-- El círculo es negro en modo claro (bg-black) y gris claro en modo oscuro (dark:bg-gray-100) -->
-                    <div class="dot absolute left-1 top-1 bg-black dark:bg-gray-100 w-6 h-6 rounded-full transition-transform duration-300"></div>
+                    <div class="track track-sm block bg-gray-300 dark:bg-gray-600 rounded-full transition-colors duration-300"></div>
+                    <div class="dot dot-sm absolute bg-black dark:bg-gray-100 rounded-full transition-transform duration-300"></div>
                 </label>
                 <!-- Fin del Switch Minimalista -->
 
 
-                <!-- Botón de Contacto principal (visible en desktop): Azul a Negro en modo claro -->
+                <!-- Botón de Contacto principal (visible en desktop) -->
                 <a href="https://wa.me/5215512345678" target="_blank" class="hidden md:block bg-black text-white px-5 py-2 rounded-full font-semibold hover:bg-gray-800 transition duration-300 shadow-lg dark:bg-blue-600 dark:hover:bg-blue-700" data-type="main">
                     Contactar Ahora
                 </a>
@@ -206,10 +212,8 @@
     </header>
 
     <!-- Menú Móvil Desplegable -->
-    <!-- Fondo del menú móvil a gris 50 (blanco sutil) -->
     <div id="mobileMenu" class="md:hidden hidden bg-gray-50 dark:bg-gray-800 shadow-xl border-t border-gray-200 dark:border-gray-700">
         <div class="flex flex-col p-4 space-y-3">
-            <!-- LINKS: Azul a Negro en modo claro -->
             <a href="#servicios" class="text-black dark:text-gray-300 hover:text-gray-700 font-semibold p-2 border-b border-gray-100 dark:border-gray-700 transition duration-300">Servicios</a>
             <a href="#proceso" class="text-black dark:text-gray-300 hover:text-gray-700 font-semibold p-2 border-b border-gray-100 dark:border-gray-700 transition duration-300">Proceso</a>
             <a href="#contacto" class="text-black dark:text-gray-300 hover:text-gray-700 font-semibold p-2 transition duration-300">Contacto</a>
@@ -217,11 +221,9 @@
     </div>
 
     <!-- Sección Principal / Hero -->
-    <!-- Fondo del hero a gris 50 (blanco sutil) -->
     <main class="pt-16 pb-20 sm:pt-20 sm:pb-32 bg-gray-50 dark:from-gray-900 dark:to-gray-800 dark:bg-gradient-to-br">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-black dark:text-white mb-6">
-                <!-- ACENTO: Azul a Negro en modo claro -->
                 El <span class="text-black dark:text-blue-600">Talento</span> que tu Empresa Necesita, <span class="text-green-600 dark:text-green-400">Garantizado</span>.
             </h2>
             <p class="text-xl sm:text-2xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto mb-10">
@@ -248,15 +250,24 @@
             <!-- Contenedor del Carrusel (oculta el overflow y aplica el degradado) -->
             <div class="carousel-container overflow-hidden relative">
                 <!-- Track de los Logos (donde ocurre la animación) -->
-                <div id="logo-track" class="logo-track">
-                    <!-- Los logos serán insertados aquí por JavaScript -->
+                <div id="logo-track" class="carousel-track">
+                    
+                    <!-- 1. Contenedor del SET ORIGINAL (usado para calcular el ancho exacto) -->
+                    <div id="logo-set-original" class="flex flex-shrink-0 gap-8 sm:gap-12">
+                        <!-- Logos insertados aquí por JS -->
+                    </div>
+
+                    <!-- 2. Contenedor del SET DUPLICADO (clon del original) -->
+                    <div id="logo-set-duplicate" class="flex flex-shrink-0 gap-8 sm:gap-12">
+                        <!-- Logos insertados aquí por JS -->
+                    </div>
+                    
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Sección de Servicios (Tipos de Perfiles) -->
-    <!-- Fondo de servicios a gris 50 (blanco sutil) -->
     <section id="servicios" class="py-20 sm:py-24 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h3 class="text-3xl sm:text-4xl font-extrabold text-center text-black dark:text-white mb-12">Nuestros Niveles de Reclutamiento</h3>
@@ -286,13 +297,10 @@
     </section>
 
     <!-- Sección de Proceso -->
-    <!-- Fondo de proceso a gris 50 (blanco sutil) -->
     <section id="proceso" class="py-20 sm:py-24 bg-gray-50 dark:bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h3 class="text-3xl sm:text-4xl font-extrabold text-center text-black dark:text-white mb-16">Nuestro Proceso Simplificado</h3>
             
-            <!-- Contenedor Flex para la Línea de Tiempo y la Gráfica (visible en md: y superiores) -->
-            <!-- En móvil (flex-col-reverse), la gráfica aparece después de la línea de tiempo para mejor flujo de lectura -->
             <div class="flex flex-col-reverse md:flex-row gap-8 items-start">
                 
                 <!-- Bloque de la Línea de Tiempo Existente (ocupa 2/3 en desktop) -->
@@ -332,7 +340,7 @@
                             <div class="md:w-1/2 p-4 text-center md:text-right md:even:text-left">
                                 <div class="bg-yellow-600 text-white font-extrabold text-xl w-10 h-10 flex items-center justify-center rounded-full mx-auto md:mx-0 md:even:ml-auto md:even:mr-0 mb-3 md:hidden">3</div>
                                 <h4 class="text-2xl font-semibold text-black dark:text-white">3. Evaluación y Presentación</h4>
-                                <p class="mt-2 text-gray-700 dark:text-gray-300">Realizamos entrevistas profundas, evaluaciones de habilidades y presentamos solo a los 3-5 mejores candidatos pre-calificados a tu equipo.</p>
+                                <p class="mt-2 text-gray-700 dark:text-gray-400">Realizamos entrevistas profundas, evaluaciones de habilidades y presentamos solo a los 3-5 mejores candidatos pre-calificados a tu equipo.</p>
                             </div>
                             <div class="hidden md:block md:w-1/12 p-4">
                                 <div class="bg-yellow-600 text-white font-extrabold text-xl w-12 h-12 flex items-center justify-center rounded-full shadow-xl ring-4 ring-yellow-200 dark:ring-yellow-800 mx-auto">3</div>
@@ -443,7 +451,6 @@
     <!-- MODAL SIMPLE DE MENSAJE (Sustituye a alert()) -->
     <div id="customModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
         <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-2xl max-w-sm w-full transform transition-all scale-100 dark:text-white">
-            <!-- Los colores del modal (Título azul, botón azul) se mantienen por defecto para usabilidad, ya que no están en el cuerpo principal de la página. -->
             <h5 id="modalTitle" class="text-xl font-bold mb-3 text-blue-600 dark:text-blue-400">Mensaje</h5>
             <p id="modalMessage" class="text-gray-700 dark:text-gray-300 mb-6">El mensaje de la aplicación se mostrará aquí.</p>
             <button onclick="closeModal()" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition duration-200">Aceptar</button>
@@ -451,12 +458,42 @@
     </div>
 
     <script>
-        const phoneNumber = '5215512345678'; // Reemplaza con tu número de WhatsApp real (código de país + número).
+        const phoneNumber = '5215512345678'; 
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        
+        /**
+         * Inicializa el modo de color basado en la preferencia del usuario o del sistema.
+         */
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (savedTheme) {
+                setDarkMode(savedTheme === 'dark');
+            } else {
+                setDarkMode(prefersDark);
+            }
+        }
+        
+        /**
+         * Función para aplicar o quitar el modo oscuro
+         * @param {boolean} isDark true para modo oscuro, false para modo claro
+         */
+        function setDarkMode(isDark) {
+            if (isDark) {
+                body.classList.add('dark');
+                darkModeToggle.checked = true; 
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark');
+                darkModeToggle.checked = false; 
+                localStorage.setItem('theme', 'light');
+            }
+        }
 
         /**
          * Función para mostrar un modal personalizado.
-         * @param {string} title Título del modal.
-         * @param {string} message Contenido del mensaje.
          */
         function showModal(title, message) {
             document.getElementById('modalTitle').textContent = title;
@@ -471,16 +508,10 @@
             document.getElementById('customModal').classList.add('hidden');
         }
 
-        // ---------------------------------------------------------------------
-        // Lógica de Contacto por WhatsApp (Refactorizada)
-        // ---------------------------------------------------------------------
-
         /**
-         * Función para contactar por WhatsApp con un mensaje predefinido basado en el data-type.
-         * @param {HTMLElement} element El botón que fue presionado, el cual contiene el data-type.
+         * Función para contactar por WhatsApp con un mensaje predefinido.
          */
         function contactWhatsApp(element) {
-            // Lee el tipo de mensaje del atributo data-type del botón, o usa 'default' si no existe
             const type = element.dataset.type || 'default';
             let message = '';
 
@@ -496,67 +527,26 @@
                     break;
             }
 
-            // Codificar el mensaje para la URL
             const encodedMessage = encodeURIComponent(message);
             const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 
-            // Abrir la URL en una nueva pestaña
             window.open(whatsappUrl, '_blank');
-
-            // Mostrar un mensaje de éxito/feedback usando el modal
             showModal('¡Redireccionando a WhatsApp!', 'Serás dirigido a WhatsApp para enviarnos el mensaje predefinido. Te responderemos a la brevedad.');
         }
 
-        // ---------------------------------------------------------------------
-        // Lógica del Modo Oscuro/Claro (Actualizada para el Switch)
-        // ---------------------------------------------------------------------
-
-        const darkModeToggle = document.getElementById('darkModeToggle'); // Ahora es el Checkbox
-        const body = document.body;
-
-        /**
-         * Función para aplicar o quitar el modo oscuro
-         * @param {boolean} isDark true para modo oscuro, false para modo claro
-         */
-        function setDarkMode(isDark) {
-            if (isDark) {
-                body.classList.add('dark');
-                darkModeToggle.checked = true; // Sincroniza el estado del checkbox
-                localStorage.setItem('theme', 'dark');
-            } else {
-                body.classList.remove('dark');
-                darkModeToggle.checked = false; // Sincroniza el estado del checkbox
-                localStorage.setItem('theme', 'light');
-            }
-        }
-
-        /**
-         * Inicializa el modo de color basado en la preferencia del usuario o del sistema.
-         */
-        function initTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-            if (savedTheme) {
-                // Si hay un tema guardado, úsalo
-                setDarkMode(savedTheme === 'dark');
-            } else {
-                // Si no hay tema guardado, usa la preferencia del sistema
-                setDarkMode(prefersDark);
-            }
-        }
 
         // ---------------------------------------------------------------------
-        // Lógica del Carrusel de Logos (Ya implementa scroll infinito)
+        // Lógica del Carrusel de Logos (FIX DE PRECISIÓN DE PÍXELES)
         // ---------------------------------------------------------------------
 
         function setupLogoCarousel() {
-            const logoTrack = document.getElementById('logo-track');
-            if (!logoTrack) return;
+            const carouselTrack = document.getElementById('logo-track');
+            const setOriginal = document.getElementById('logo-set-original');
+            const setDuplicate = document.getElementById('logo-set-duplicate');
 
-            // Lista de Logos de ejemplo (usando placehold.co)
-            // Se usa el mismo color de fondo (#0d1117) que el modo oscuro para que se vean bien
-            // y con el filtro de CSS en modo oscuro, se inviertan a logos "claros" para el fondo oscuro.
+            if (!carouselTrack || !setOriginal || !setDuplicate) return;
+
+            // Datos de los logos (Se usa placehold.co para asegurar que la imagen cargue)
             const logos = [
                 { url: 'https://placehold.co/150x50/1e293b/FFFFFF?text=TechCorp', alt: 'TechCorp' },
                 { url: 'https://placehold.co/150x50/16a34a/FFFFFF?text=Green+Energy', alt: 'Green Energy' },
@@ -568,80 +558,95 @@
                 { url: 'https://placehold.co/150x50/a855f7/FFFFFF?text=Health+Co', alt: 'Health Co' },
             ];
 
-            // 1. Crear elementos HTML para la lista principal de logos
             const createLogoElement = (logo) => {
                 const logoItem = document.createElement('div');
                 logoItem.className = 'logo-item';
-                // Añadimos una imagen de fallback si la URL falla
                 const img = document.createElement('img');
                 img.src = logo.url;
                 img.alt = `Logo de ${logo.alt}`;
                 img.className = 'w-full h-auto object-contain';
+                // Fallback en caso de error de carga
                 img.onerror = function() {
-                    // Fallback simple si la imagen no carga
                     this.src = `https://placehold.co/150x50/94a3b8/FFFFFF?text=${logo.alt.substring(0, 4)}`;
                 };
                 logoItem.appendChild(img);
                 return logoItem;
             };
 
+            // 1. Limpiar contenedores para evitar duplicados en re-ejecución
+            setOriginal.innerHTML = '';
+            setDuplicate.innerHTML = '';
+            
+            // 2. Llenar el SET ORIGINAL
             logos.forEach(logo => {
-                logoTrack.appendChild(createLogoElement(logo));
+                setOriginal.appendChild(createLogoElement(logo));
             });
 
-            // 2. Duplicar todos los logos para crear el efecto de carrusel infinito
-            // Clonar nodos es más robusto que usar innerHTML
-            const originalLogos = Array.from(logoTrack.children);
-            originalLogos.forEach(logo => {
-                logoTrack.appendChild(logo.cloneNode(true));
+            // 3. Llenar el SET DUPLICADO (clonando los elementos del set original)
+            const originalItems = Array.from(setOriginal.children);
+            originalItems.forEach(item => {
+                setDuplicate.appendChild(item.cloneNode(true));
             });
-        }
-
-        // ---------------------------------------------------------------------
-        // Lógica del Menú Móvil
-        // ---------------------------------------------------------------------
-
-        const mobileMenuButton = document.getElementById('mobileMenuButton');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const menuIcon = document.getElementById('menuIcon');
-        const closeIcon = document.getElementById('closeIcon');
-
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            menuIcon.classList.toggle('hidden');
-            closeIcon.classList.toggle('hidden');
-        });
-
-        // Cierra el menú móvil cuando se hace clic en cualquier enlace
-        document.querySelectorAll('#mobileMenu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                menuIcon.classList.remove('hidden');
-                closeIcon.classList.add('hidden');
-            });
-        });
-
-
-        // ---------------------------------------------------------------------
-        // NUEVO: Observador de Intersección para Animación de Tarjetas
-        // ---------------------------------------------------------------------
-        // Esto detecta cuando las tarjetas entran en la pantalla para animarlas
-        
-        const observerOptions = {
-            root: null, // viewport
-            rootMargin: '0px',
-            threshold: 0.1 // activar cuando el 10% del elemento sea visible
-        };
-
-        const cardObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); // Solo animar una vez
+            
+            /**
+             * FUNCIÓN CLAVE: Calcula el ancho exacto del set original y define la animación en píxeles.
+             * CORRECCIÓN: Ahora incluye el GAP que existe entre el set original y el duplicado.
+             */
+            const setPixelPerfectAnimation = () => {
+                // Obtenemos el ancho exacto en píxeles del primer set de logos.
+                const setWidth = setOriginal.offsetWidth;
+                
+                if (setWidth === 0) {
+                    // Si el ancho es 0, intentamos de nuevo después de un tiempo corto
+                    setTimeout(setPixelPerfectAnimation, 100); 
+                    return;
                 }
-            });
-        }, observerOptions);
+                
+                // 1. Obtener el valor del GAP CSS del track principal
+                const style = window.getComputedStyle(carouselTrack);
+                // Esto devuelve una cadena como "32px"
+                const gapString = style.getPropertyValue('gap'); 
+                // Convertir la cadena (p. ej., "32px") a un número (32)
+                const gapValue = parseFloat(gapString); 
 
+                // 2. Calcular el ancho total de traslación
+                // El ancho total es el set original + el gap que lo separa del set duplicado
+                const totalTranslateWidth = setWidth + gapValue; 
+
+                // 3. Definimos la animación Keyframes usando el ancho exacto total.
+                const keyframes = `
+                    @keyframes scroll-logos-px {
+                        from { transform: translateX(0); }
+                        to { transform: translateX(-${totalTranslateWidth}px); }
+                    }
+                `;
+                
+                // Inyectamos la animación en el CSS
+                let styleSheet = document.getElementById('carousel-styles');
+                if (!styleSheet) {
+                    styleSheet = document.createElement('style');
+                    styleSheet.id = 'carousel-styles';
+                    document.head.appendChild(styleSheet);
+                }
+                // Limpiamos contenido anterior y establecemos el nuevo
+                styleSheet.innerHTML = keyframes;
+
+                // Forzar un reinicio de la animación para aplicar los nuevos keyframes si la ventana cambió de tamaño.
+                carouselTrack.style.animation = 'none';
+                void carouselTrack.offsetWidth; // Trigger reflow
+                // Reasignar la animación definida en el CSS principal
+                // 60s para desktop, 40s para mobile (definido en el media query del <style>)
+                const duration = window.innerWidth <= 640 ? '40s' : '60s';
+                carouselTrack.style.animation = `scroll-logos-px ${duration} linear infinite`;
+            };
+
+            // Ejecutamos la función con un pequeño retraso y en el evento de redimensionamiento
+            window.addEventListener('load', () => setTimeout(setPixelPerfectAnimation, 100));
+            window.addEventListener('resize', setPixelPerfectAnimation);
+            
+            // También la llamamos una vez por si el load ya pasó
+            setTimeout(setPixelPerfectAnimation, 100); 
+        }
 
         // ---------------------------------------------------------------------
         // Listeners Globales
@@ -649,9 +654,19 @@
 
         // 1. Inicializar el tema y el carrusel al cargar la página
         initTheme();
-        setupLogoCarousel(); // Carga y duplica los logos
+        setupLogoCarousel(); 
         
         // Inicializar el observador para las tarjetas de animación
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const cardObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
         document.querySelectorAll('.fade-in-up').forEach(el => {
             cardObserver.observe(el);
         });
@@ -668,18 +683,41 @@
             });
         });
 
-        // 4. Función de Desplazamiento Suave (Smooth Scroll)
+        // 4. Función de Desplazamiento Suave (Smooth Scroll) - Solo para enlaces de header/footer
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
+            if (!anchor.closest('#mobileMenu')) {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+
+        // Lógica del Menú Móvil
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuIcon = document.getElementById('menuIcon');
+        const closeIcon = document.getElementById('closeIcon');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', function() {
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
                     behavior: 'smooth'
                 });
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
             });
         });
 
-        // 5. Función de Feedback: Muestra un mensaje en consola al visitar la página
-        console.log("¡Bienvenido al sitio web de reclutamiento TalentoConnect! Gracias por visitarnos.");
     </script>
 </body>
 </html>
